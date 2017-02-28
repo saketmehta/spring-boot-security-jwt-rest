@@ -1,5 +1,6 @@
 package com.saketmehta.security;
 
+import com.saketmehta.services.UserService;
 import org.springframework.boot.autoconfigure.security.Http401AuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,14 +25,17 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AuthenticationProvider   jwtAuthenticationProvider;
+    private final UserService              userService;
 
-    public SecurityConfig(AuthenticationProvider jwtAuthenticationProvider) {
+    public SecurityConfig(AuthenticationProvider jwtAuthenticationProvider, UserService userService) {
         this.jwtAuthenticationProvider = jwtAuthenticationProvider;
+        this.userService = userService;
         this.authenticationEntryPoint = new Http401AuthenticationEntryPoint("Unauthorized");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService);
         auth.authenticationProvider(jwtAuthenticationProvider);
     }
 
@@ -48,13 +52,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()
                 .and()
+                .addFilterBefore(buildUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildJwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.headers().cacheControl().disable();
     }
 
-    private JwtAuthenticationProcessingFilter buildJwtAuthenticationProcessingFilter() throws Exception {
+    private LoginFilter buildUsernamePasswordAuthenticationFilter() throws Exception {
+        AntPathRequestMatcher authMatcher = new AntPathRequestMatcher("/api/auth/login", "POST");
+        LoginFilter filter = new LoginFilter(authMatcher);
+        filter.setAuthenticationManager(this.authenticationManagerBean());
+        return filter;
+    }
+
+    private JwtAuthenticationFilter buildJwtAuthenticationProcessingFilter() throws Exception {
         AntPathRequestMatcher authMatcher = new AntPathRequestMatcher("/api/auth/**");
-        JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(new NegatedRequestMatcher(authMatcher));
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(new NegatedRequestMatcher(authMatcher));
         filter.setAuthenticationManager(this.authenticationManagerBean());
         return filter;
     }

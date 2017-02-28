@@ -17,9 +17,9 @@ import java.io.IOException;
  * Date: 26/02/17
  * Time: 12:13 AM
  */
-public class JwtAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
+public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    JwtAuthenticationProcessingFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+    JwtAuthenticationFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
     }
 
