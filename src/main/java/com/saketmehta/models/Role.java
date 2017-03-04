@@ -6,9 +6,5 @@ package com.saketmehta.models;
  * Time: 12:12 PM
  */
 public enum Role {
-    ADMIN, USER;
-
-    public String authority() {
-        return "ROLE_" + this.name();
-    }
+    ADMIN, USER
 }

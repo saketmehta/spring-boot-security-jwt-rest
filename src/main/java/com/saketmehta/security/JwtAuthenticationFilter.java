@@ -25,8 +25,11 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        // TODO: 26/02/17 implement this
-        return null;
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null) return null;
+        if (!authHeader.startsWith("Bearer")) return null;
+        String jwt = authHeader.substring(7);
+        return this.getAuthenticationManager().authenticate(new JwtAuthenticationToken(jwt));
     }
 
     @Override

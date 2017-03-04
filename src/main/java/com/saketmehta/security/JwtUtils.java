@@ -20,12 +20,12 @@ public class JwtUtils {
      * @param token the JWT token to parse
      * @return the User object extracted from specified token or null if a token is invalid.
      */
-    public static String parseToken(String token) {
+    static User parseToken(String token) {
         Claims body = Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
-        return body.getSubject();
+        return (User) body.get("user");
     }
 
     /**
@@ -37,6 +37,7 @@ public class JwtUtils {
      */
     public static String generateToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
+        claims.put("user", user);
         return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret)
