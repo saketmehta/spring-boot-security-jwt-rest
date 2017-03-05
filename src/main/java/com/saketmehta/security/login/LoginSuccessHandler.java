@@ -1,6 +1,6 @@
 package com.saketmehta.security.login;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.saketmehta.security.jwt.JwtUtils;
 import com.saketmehta.security.models.User;
 import org.springframework.http.MediaType;
@@ -26,6 +26,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String token = JwtUtils.generateToken((User) authentication.getPrincipal());
         Map<String, String> result = new HashMap<>();
         result.put("token", token);
-        response.getWriter().write(new ObjectMapper().writeValueAsString(result));
+        response.getWriter().write(new Gson().toJson(result));
     }
 }
