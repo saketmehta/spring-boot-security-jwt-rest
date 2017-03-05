@@ -1,8 +1,8 @@
-package com.saketmehta.security;
+package com.saketmehta.security.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
-import com.saketmehta.models.User;
+import com.saketmehta.security.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,7 +14,7 @@ import java.io.IOException;
  * Date: 25/02/17
  * Time: 1:01 PM
  */
-class JwtUtils {
+public class JwtUtils {
     private static final String secret = "ytftyfuggcr3w!56";
     private static final Gson gson = new Gson();
 
@@ -40,8 +40,8 @@ class JwtUtils {
      * @param user the user for which the token will be generated
      * @return the JWT token
      */
-    static String generateToken(User user) throws JsonProcessingException {
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
+    public static String generateToken(User user) throws JsonProcessingException {
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.put("user", gson.toJson(user));
         return Jwts.builder()
                 .setClaims(claims)

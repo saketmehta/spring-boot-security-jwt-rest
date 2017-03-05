@@ -1,4 +1,4 @@
-package com.saketmehta.security;
+package com.saketmehta.security.login;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     private final LoginSuccessHandler loginSuccessHandler;
 
-    LoginFilter(AntPathRequestMatcher authMatcher) {
+    public LoginFilter(AntPathRequestMatcher authMatcher) {
         super(authMatcher);
         loginSuccessHandler = new LoginSuccessHandler();
     }

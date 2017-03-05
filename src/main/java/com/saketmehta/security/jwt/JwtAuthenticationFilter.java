@@ -1,4 +1,4 @@
-package com.saketmehta.security;
+package com.saketmehta.security.jwt;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    JwtAuthenticationFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+    public JwtAuthenticationFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
     }
 

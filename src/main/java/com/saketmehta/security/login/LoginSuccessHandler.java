@@ -1,7 +1,8 @@
-package com.saketmehta.security;
+package com.saketmehta.security.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.saketmehta.models.User;
+import com.saketmehta.security.jwt.JwtUtils;
+import com.saketmehta.security.models.User;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

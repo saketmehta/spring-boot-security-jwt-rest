@@ -1,4 +1,4 @@
-package com.saketmehta.models;
+package com.saketmehta.security.models;
 
 /**
  * User: Saket

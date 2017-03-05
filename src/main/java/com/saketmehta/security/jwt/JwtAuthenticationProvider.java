@@ -1,6 +1,6 @@
-package com.saketmehta.security;
+package com.saketmehta.security.jwt;
 
-import com.saketmehta.models.User;
+import com.saketmehta.security.models.User;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;

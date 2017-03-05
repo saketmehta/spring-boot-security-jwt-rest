@@ -1,6 +1,8 @@
 package com.saketmehta.security;
 
-import com.saketmehta.services.UserService;
+import com.saketmehta.security.jwt.JwtAuthenticationFilter;
+import com.saketmehta.security.login.LoginFilter;
+import com.saketmehta.security.services.UserService;
 import org.springframework.boot.autoconfigure.security.Http401AuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
