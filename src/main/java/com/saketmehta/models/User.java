@@ -1,5 +1,6 @@
 package com.saketmehta.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
  * Date: 25/02/17
  * Time: 12:13 PM
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
     private Long       userId;
     private String     name;

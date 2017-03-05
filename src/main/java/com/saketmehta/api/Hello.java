@@ -1,6 +1,7 @@
 package com.saketmehta.api;
 
 import com.saketmehta.models.Greeting;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,7 @@ public class Hello {
     }
 
     @GetMapping("api/secret/hello")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Greeting getSecretGreeting() {
         return new Greeting("You have reached a secret place!");
     }

@@ -8,6 +8,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.io.IOException;
+
 /**
  * User: Saket
  * Date: 25/02/17
@@ -21,9 +23,10 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
         String token = (String) authentication.getCredentials();
 
-        User user = JwtUtils.parseToken(token);
-
-        if (user == null) {
+        User user;
+        try {
+            user = JwtUtils.parseToken(token);
+        } catch (IOException e) {
             throw new BadCredentialsException("Authentication Failed. JWT is not valid.");
         }
 

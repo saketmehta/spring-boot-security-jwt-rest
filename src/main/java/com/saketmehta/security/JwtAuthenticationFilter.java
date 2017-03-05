@@ -1,5 +1,7 @@
 package com.saketmehta.security;
 
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,8 +28,12 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String authHeader = request.getHeader("Authorization");
-        if (authHeader == null) return null;
-        if (!authHeader.startsWith("Bearer")) return null;
+        if (authHeader == null) {
+            throw new InsufficientAuthenticationException("No 'Authorization' header present in request.");
+        }
+        if (!authHeader.startsWith("Bearer")) {
+            throw new BadCredentialsException("Invalid format for 'Authorization' header.");
+        }
         String jwt = authHeader.substring(7);
         return this.getAuthenticationManager().authenticate(new JwtAuthenticationToken(jwt));
     }
