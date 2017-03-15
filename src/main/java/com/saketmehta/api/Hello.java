@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class Hello {
-
     @GetMapping("api/hello")
     public Greeting getGreeting() {
         return new Greeting("Hello World!");
@@ -23,5 +22,4 @@ public class Hello {
     public Greeting getSecretGreeting() {
         return new Greeting("You have reached a secret place!");
     }
-
 }

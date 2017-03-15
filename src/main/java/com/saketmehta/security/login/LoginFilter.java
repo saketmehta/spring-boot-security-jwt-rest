@@ -1,5 +1,6 @@
 package com.saketmehta.security.login;
 
+import com.google.gson.Gson;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,11 +20,11 @@ import java.io.IOException;
  * Time: 8:23 PM
  */
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
-    private final LoginSuccessHandler loginSuccessHandler;
+    private static final LoginSuccessHandler loginSuccessHandler = new LoginSuccessHandler();
+    private static final Gson                gson                = new Gson();
 
     public LoginFilter(AntPathRequestMatcher authMatcher) {
         super(authMatcher);
-        loginSuccessHandler = new LoginSuccessHandler();
     }
 
     @Override
@@ -32,20 +33,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
 
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        UsernamePasswordDTO dto = gson.fromJson(request.getReader(), UsernamePasswordDTO.class);
 
-        if (email == null) {
-            email = "";
-        }
-
-        if (password == null) {
-            password = "";
-        }
-
-        email = email.trim();
-
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(email, password);
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
 
         return this.getAuthenticationManager().authenticate(authRequest);
     }
@@ -53,5 +43,26 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         loginSuccessHandler.onAuthenticationSuccess(request, response, authResult);
+    }
+
+    private static class UsernamePasswordDTO {
+        private String username;
+        private String password;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 }

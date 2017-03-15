@@ -1,7 +1,7 @@
 package com.saketmehta.security.services;
 
-import com.saketmehta.security.models.Role;
-import com.saketmehta.security.models.User;
+import com.saketmehta.security.models.Authorities;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,17 +18,8 @@ import java.util.Collections;
 public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = new User();
-        user.setName("Simple User");
-        user.setUsername("user");
-        user.setPassword("user");
-        user.setRoles(Collections.singletonList(Role.USER));
-
-        User admin = new User();
-        user.setName("Admin User");
-        user.setUsername("admin");
-        user.setPassword("admin");
-        user.setRoles(Collections.singletonList(Role.ADMIN));
+        User user = new User("user", "user", Collections.singletonList(Authorities.USER));
+        User admin = new User("user", "user", Collections.singletonList(Authorities.ADMIN));
 
         switch (username) {
             case "admin":
